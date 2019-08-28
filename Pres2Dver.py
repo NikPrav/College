@@ -64,6 +64,9 @@ ax.scatter(0,Cyz[0],Cyz[1],'o',label="$C$")
 plt.plot([0,0],[np.transpose(H)[0],Byz[0]],[np.transpose(H)[1],Byz[1]],label="Line $Altitude_1$")
 plt.plot([0,0],[np.transpose(H)[0],Ayz[0]],[np.transpose(H)[1],Ayz[1]],label="Line $Altitude_2$")
 
+plt.plot([0,0],[CCyz[0],H[0]],[CCyz[1],H[1]],label="Euler's Line")
+Oyz=(Ayz+Byz+Cyz)/3.0
+ax.scatter(0,Oyz[0],Oyz[1],'o',label="$Centroid$")
 
 plt.xlabel('$x$');plt.ylabel('$y$')
 plt.legend(loc='best')
