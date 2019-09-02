@@ -1,31 +1,32 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from coeffs import *
 
 
 #Plotting the circle
-x = 8*np.ones(8)
-y = 6*np.ones(8)
-r = np.arange(8)/np.sqrt(2)
-phi = np.linspace(0.0,2*np.pi,100)
-na=np.newaxis
-# the first axis of these arrays varies the angle, 
-# the second varies the circles
-x_line = x[na,:]+r[na,:]*np.sin(phi[:,na])
-y_line = y[na,:]+r[na,:]*np.cos(phi[:,na])
+len=100
 
-ax=plt.plot(x_line,y_line,'-')
+
+r=2.835533905
+x=np.zeros((len))
+theta = np.linspace(0,2*np.pi,len)
+x_circ = np.zeros((2,len))
+x_circ[0,:] = r*np.cos(theta)+8
+x_circ[1,:] = r*np.sin(theta)+6
+plt.plot(x_circ[0,:],x_circ[1,:],label='$f(x)$')
 
 #Plotting the line
-x1 = np.linspace(-5,20,100)
-x2 = 18*np.ones(100) - x1
+A = np.array([9,9])
+B = np.array([1,17]) 
+x=line_gen(A-(B-A)*5,(B-A)*5+A)
 
 x1_extend = np.linspace(-5,40,100)
-x2_extend = 24*np.ones(100) - x1_extend
+x2_extend = 40*np.ones(100) - x1_extend
 
-bx=plt.plot(x1,x2,label="$x_1+x_2-9=0$")
+bx=plt.plot(x[0],x[1],label="$x_1+x_2-18=0$")
 
 plt.fill_between(x1_extend,x2_extend,color='grey')
-plt.fill_between(x1,x2,color='white')
+plt.fill_between(x[0],x[1],color='white')
 plt.axis('equal')
 plt.grid()
 plt.xlabel('$x_1$')
