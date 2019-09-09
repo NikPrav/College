@@ -23,7 +23,7 @@ double var(double E,char *str) //Function for finding variance
 	double sum=0.0,i=0;
 	while(fscanf(fp,"%lf\n",&x)!=EOF)
 	{
-		sum=(x-E)*(x-E);
+		sum+=(x-E)*(x-E);
 		++i;
 	}
 	
