@@ -122,6 +122,7 @@ function sensor() {
 
 var dap=0;
 var r=0;
+var l=0;
 var ken=0;
 
 //Function to move the bot
@@ -139,6 +140,192 @@ function movebot()
         odir.left=dist.left;
         odir.right=dist.right;
         console.log("dist="+ dist.down)
+        console.log("vtotal="+vtotal)
+        if(vtotal<14*box){
+            d="DOWN";
+            if(dist.down==0 && dist.right!=0 && l==0)
+            {
+                d="RIGHT";
+                dap=1;
+                ++r;
+                ken=1;
+                return 0;
+            }
+            else if(dist.down==0 && dist.left!=0){
+                d="LEFT";
+                dap=1;
+                ++l;
+                ken=1;
+                return 0;
+            }
+            else if(dist.right!=0 && ken==0 && l!=0){
+                d="RIGHT";
+                --l;
+                dap=1;
+                return 0;
+
+            }
+            else if(dist.left!=0 && ken==0 && r!=0)
+            {
+                d="LEFT";
+                --r;
+                dap=1;
+                return 0;
+            }
+            dap=0;
+            ken=0;
+            
+
+        }
+        else{
+            //if(dist.right!=0){
+            d="RIGHT";
+            vtotal=0 ;
+            //}
+            movedir="up";
+            dap=1;
+            
+            //return 0;
+        }
+        
+    }
+    else if(movedir=="up")//While the bot is moving up
+    {   
+        vtotal+=odir.up-dist.up;
+        document.getElementById("vt").innerHTML="vtotal="+vtotal/box;
+        document.getElementById("du").innerHTML="Dup="+dist.up/box + " Ou="+odir.up/box;
+        //document.getElementById("ou").innerHTML="Ou="+odir.up/box;
+        //dap=0;
+        
+        odir.up=dist.up;
+        odir.down=dist.down;
+        odir.left=dist.left;
+        odir.right=dist.right;
+        
+        if(vtotal<14*box){
+
+            d="UP";
+            if(dist.up==0 && dist.right!=0 && l==0)
+            {
+                d="RIGHT";
+                dap=1;
+                ++r;
+                ken=1;
+                return 0;
+            }else if(dist.up==0 && dist.left!=0)
+            {
+                d="LEFT";
+                dap=1;
+                ++l;
+                ken=1;
+                return 0;
+            }
+                
+
+            else if(dist.left!=0 && ken==0 && r!=0)
+            {
+                d="LEFT";
+                --r;
+                dap=1;
+                return 0;
+            }
+            else if(dist.right!=0 && ken==0 && l!=0)
+            {
+                d="RIGHT";
+                --l;
+                dap=1;
+                return 0;
+            }
+            dap=0;
+            ken=0;
+            
+        }
+        else{
+            d="RIGHT";
+            movedir="down";
+            dap=1;
+            vtotal=0;
+            return 0;
+        
+        }
+    }
+
+    
+}
+
+
+
+//Draw everything to the canvas
+var flag=false;
+function draw()
+{
+    if(!flag){
+    
+    //Calculating the USS reading    
+    sensor(); 
+        
+    //Moving the bot
+    movebot();
+        
+    
+
+    
+     
+    
+    document.getElementById("rt").innerHTML="right="+dist.right/box + " left="+dist.left/box; 
+    //document.getElementById("lt").innerHTML="left="+dist.left/box; 
+    document.getElementById("up").innerHTML="up="+dist.up/box + " down="+dist.down/box; 
+    document.getElementById("dn").innerHTML="bot.x="+bot.x/box + " bot.y="+bot.y/box; 
+    for(let i=0;i<obs.length; ++i)
+    {
+        if(newpos.x==obs[i].x && newpos.y==obs[i].y)
+            flag=true;
+        else if(newpos.x>=18*box || newpos.y>=18*box)
+            flag=true;
+        else if(newpos.x<1*box || newpos.y<3*box)
+            flag=true
+        //changedir();
+    }
+    bot.x=newpos.x;
+    bot.y=newpos.y;
+    
+    ctx.drawImage(ground,0,0);
+    ctx.fillStyle = "blue";
+    ctx.fillRect(bot.x,bot.y,box,box);
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(bot.x,bot.y,box,box);
+    
+    for(let j=0; j<obs.length; ++j)
+    {
+        if(!(obs[j].x == 0 && obs[j] == 0))
+        {
+            ctx.fillStyle = "black";
+            ctx.fillRect(obs[j].x,obs[j].y,box,box);
+        }
+            //ctx.strokeStyle = "yellow";
+        //ctx.strokeRect(obs[j].x,obs[j].y,box,box);
+    }
+    //Finding next position of the bot 
+    newdir();
+    if(dap)
+    {
+
+        sensor();
+        odir.up=dist.up;
+        odir.down=dist.down;
+        odir.left=dist.left;
+        odir.right=dist.right;
+        //vtotal=box;   
+    }
+}
+//else
+//alert("Error,Bitch!!")
+    
+}
+
+let game = setInterval(draw,100);
+//document.addEventListener("keydown",draw);
+      console.log("dist="+ dist.down)
         console.log("vtotal="+vtotal)
         if(vtotal<14*box){
             d="DOWN";
